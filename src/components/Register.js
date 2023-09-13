@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
 import app from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
 
@@ -15,15 +15,26 @@ const Register = () => {
     const email = event.target.email.value;
     const password = event.target.password.value;
 
+
+    // for create account
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
         console.log(result.user);
         event.target.reset();
+
+        // for update the name of the user
         updateProfile(auth.currentUser, {
           displayName: name
         }).then(() => {
           toast.success('Name update successfully!!');
           console.log('Current User: ', auth.currentUser);
+
+          // for email verification
+          sendEmailVerification(auth.currentUser)
+            .then(() => {
+              toast.info('Please check your inbox for verify your email!');
+            });
+
         }).catch((error) => {
           toast.error(error.message);
         });
