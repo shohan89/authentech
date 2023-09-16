@@ -1,9 +1,15 @@
+import { useContext } from 'react'
 import ethImg from '../assets/eth.jpeg'
+import { AuthContext } from '../contexts/UserContext'
 
 const Wallet = () => {
+  const { user } = useContext(AuthContext);
   return (
     <section className='bg-gray-100 text-gray-900 min-h-screen'>
-      <div className='container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between'>
+
+
+        { 
+        user && user.emailVerified ? <div className='container flex flex-col justify-center p-6 mx-auto sm:py-12 lg:py-24 lg:flex-row lg:justify-between'>
         <div className='flex items-center justify-center p-6 mt-8 lg:mt-0 h-72 sm:h-80 lg:h-96 xl:h-112 2xl:h-128'>
           <img
             src={ethImg}
@@ -29,7 +35,15 @@ const Wallet = () => {
             </button>
           </div>
         </div>
-      </div>
+      </div> :  <div className='flex justify-center p-40'><p className='text-4xl text-center'>
+          Please Verify your email.
+          <br />
+          A Verification Link Has Been Sent To Your Email Address.
+        </p></div>
+        
+        }
+
+      
     </section>
   )
 }
