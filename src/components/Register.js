@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import app from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../contexts/UserContext';
 
