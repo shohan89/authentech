@@ -1,15 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import app from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
+import { AuthContext } from '../contexts/UserContext';
 
 
-const googleProvider = new GoogleAuthProvider();
+
 
 const Register = () => {
 
-  const auth = getAuth(app);
+  const { createUser, updateName, verifyEmail, signInWithGoogle } = useContext(AuthContext);
 
   // SignUp with email and password
   const handleSubmit = event => {
@@ -22,20 +22,18 @@ const Register = () => {
 
 
     // for create account
-    createUserWithEmailAndPassword(auth, email, password)
+    createUser(email, password)
       .then(result => {
         // console.log(result.user);
         event.target.reset();
 
         // for update the name of the user
-        updateProfile(auth.currentUser, {
-          displayName: name
-        }).then(() => {
-          toast.success('Name update successfully!!');
-          console.log('Current User: ', auth.currentUser);
+        updateName(name)
+          .then(() => {
+            toast.success('Name update successfully!!');
 
           // for email verification
-          sendEmailVerification(auth.currentUser)
+          verifyEmail()
             .then(() => {
               toast.info('Please check your inbox for verify your email!');
             });
@@ -48,7 +46,7 @@ const Register = () => {
   }
   // SignUp with Google
   const handleGoogleSignUp = () =>{
-    signInWithPopup(auth, googleProvider)
+    signInWithGoogle()
       .then(result =>{
         console.log(result.user);
       })
