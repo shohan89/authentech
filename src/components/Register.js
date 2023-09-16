@@ -1,12 +1,17 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import app from '../firebase/firebase.init';
 import { toast } from 'react-toastify';
+
+
+const googleProvider = new GoogleAuthProvider();
 
 const Register = () => {
 
   const auth = getAuth(app);
+
+  // SignUp with email and password
   const handleSubmit = event => {
     event.preventDefault();
     console.log('hello');
@@ -19,7 +24,7 @@ const Register = () => {
     // for create account
     createUserWithEmailAndPassword(auth, email, password)
       .then(result => {
-        console.log(result.user);
+        // console.log(result.user);
         event.target.reset();
 
         // for update the name of the user
@@ -41,6 +46,14 @@ const Register = () => {
       })
       .catch(error => console.error(error));
   }
+  // SignUp with Google
+  const handleGoogleSignUp = () =>{
+    signInWithPopup(auth, googleProvider)
+      .then(result =>{
+        console.log(result.user);
+      })
+  }
+
 
   return (
     <div className='flex justify-center items-center pt-8'>
@@ -116,7 +129,7 @@ const Register = () => {
           <div className='flex-1 h-px sm:w-16 dark:bg-gray-700'></div>
         </div>
         <div className='flex justify-center space-x-4'>
-          <button aria-label='Log in with Google' className='p-3 rounded-sm'>
+          <button onClick={ handleGoogleSignUp } aria-label='Log in with Google' className='p-3 rounded-sm'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               viewBox='0 0 32 32'
@@ -155,5 +168,6 @@ const Register = () => {
     </div>
   )
 }
+
 
 export default Register
