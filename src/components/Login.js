@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { Link } from "react-router-dom"
 import { AuthContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const Login = () => {
 
@@ -12,6 +13,13 @@ const Login = () => {
 
     const email = event.target.email.value;
     const password = event.target.password.value;
+
+    signIn(email, password)
+      .then(result =>{
+        toast.success('Login Success!');
+        console.log(result.user);
+      })
+      .catch(error => toast.error(error));
 
   }
   // SignUp with Google
