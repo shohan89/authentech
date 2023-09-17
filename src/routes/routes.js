@@ -6,6 +6,7 @@ import Login from "../components/Login";
 import Register from "../components/Register";
 import Wallet from "../components/Wallet";
 import Profile from "../components/Profile";
+import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
     {
@@ -27,11 +28,11 @@ const router = createBrowserRouter([
         },
         {
             path: '/wallet',
-            element: <Wallet />
+            element: <PrivateRoute><Wallet /></PrivateRoute>
         },
         {
             path: '/profile',
-            element: <Profile />
+            element: <PrivateRoute><Profile /></PrivateRoute>
         }
       ]
     }

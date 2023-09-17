@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { AuthContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
 
@@ -7,6 +7,8 @@ const Login = () => {
 
   const { signIn, resetPassword, signInWithGoogle } = useContext(AuthContext);
   const navigator = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -18,7 +20,7 @@ const Login = () => {
     signIn(email, password)
       .then(result =>{
         toast.success('Login Success!');
-        navigator('/profile');
+        navigator(from, { replace: true });
         console.log(result.user);
       })
       .catch(error => toast.error(error));
