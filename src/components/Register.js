@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify';
 import { AuthContext } from '../contexts/UserContext';
 
@@ -9,11 +9,13 @@ import { AuthContext } from '../contexts/UserContext';
 const Register = () => {
 
   const { createUser, updateName, verifyEmail, signInWithGoogle } = useContext(AuthContext);
+  const navigator = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
 
   // SignUp with email and password
   const handleSubmit = event => {
     event.preventDefault();
-    console.log('hello');
 
     const name = event.target.name.value;
     const email = event.target.email.value;
@@ -35,6 +37,7 @@ const Register = () => {
           verifyEmail()
             .then(() => {
               toast.info('Please check your inbox for verify your email!');
+              navigator(from, { replace: true });
             });
 
         }).catch((error) => {
@@ -47,7 +50,7 @@ const Register = () => {
   const handleGoogleSignUp = () =>{
     signInWithGoogle()
       .then(result =>{
-        console.log(result.user);
+        navigator(from, { replace: true });
       })
   }
 
